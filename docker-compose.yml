@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16  # 包含pgvector的官方镜像
+    container_name: postgres_vector
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass123  # 改为你的密码
+      POSTGRES_DB: vector_db
+    ports:
+      - "5432:5432"  # 本地端口:容器端口
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # 数据持久化
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # 初始化脚本
+    restart: unless-stopped
+
+volumes:
+  postgres_data:  # Docker卷，保存数据库数据
